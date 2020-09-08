@@ -1,0 +1,4 @@
+{
+  "crime_ids_url": "http://qamqor.gov.kz/ias2/ias1_crime_id",
+  "crimes_url": "http://infopublic.pravstat.kz:8399/arcgis/rest/services/stat/MapServer/5/query"
+}

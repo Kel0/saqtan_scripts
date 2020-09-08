@@ -1,0 +1,44 @@
+{
+  "post_data_with_yr_period": {
+    "where": "YR='{}' AND PERIOD='{}'",
+    "geometryType": "esriGeometryEnvelope",
+    "spatialRel": "esriSpatialRelIntersects",
+    "outFields": "*",
+    "returnGeometry": "true",
+    "returnTrueCurves": "false",
+    "returnIdsOnly": "false",
+    "returnCountOnly": "false",
+    "returnZ": "false",
+    "returnM": "false",
+    "returnDistinctValues": "false",
+    "f": "json"
+  },
+  "post_data_with_yr_period_city": {
+    "where": "YR='{}' AND PERIOD='{}' AND CITY_CODE='{}'",
+    "geometryType": "esriGeometryEnvelope",
+    "spatialRel": "esriSpatialRelIntersects",
+    "outFields": "*",
+    "returnGeometry": "true",
+    "returnTrueCurves": "false",
+    "returnIdsOnly": "false",
+    "returnCountOnly": "false",
+    "returnZ": "false",
+    "returnM": "false",
+    "returnDistinctValues": "false",
+    "f": "json"
+  },
+  "post_data_with_yr_city": {
+    "where": "YR='{}' AND CITY_CODE='{}'",
+    "geometryType": "esriGeometryEnvelope",
+    "spatialRel": "esriSpatialRelIntersects",
+    "outFields": "*",
+    "returnGeometry": "true",
+    "returnTrueCurves": "false",
+    "returnIdsOnly": "false",
+    "returnCountOnly": "false",
+    "returnZ": "false",
+    "returnM": "false",
+    "returnDistinctValues": "false",
+    "f": "json"
+  }
+}

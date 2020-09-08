@@ -1,0 +1,17 @@
+[Unit]
+Description=saqtan_scripts 'Crimes'
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=hamlet
+WorkingDirectory=/home/hamlet/Desktop/gits/kelo/saqtan_scripts
+Environment="PATH=/home/hamlet/.pyenv/versions/saqtan_scripts/bin/:$PATH"
+EnvironmentFile=/home/hamlet/Desktop/gits/kelo/saqtan_scripts/.env
+ExecStart=/home/hamlet/.pyenv/versions/saqtan_scripts/bin/python /home/hamlet/Desktop/gits/kelo/saqtan_scripts/feed.py crimes
+RestartSec=15000
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

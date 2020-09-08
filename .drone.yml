@@ -1,0 +1,13 @@
+kind: pipeline
+name: saqtan-scripts
+
+steps:
+  - name: saqtan-scripts-test
+    pull: if-not-exists
+    image: python:3.7
+    commands:
+      - pip install invoke
+      - inv install
+      - inv check
+      - export SA_DB_URL=mysql://tests:321@tests:3306/tests
+      - inv test
