@@ -12,7 +12,7 @@ def mock_add_commit():
     mock_add_commit = Mock()
     mock_add_commit.add.return_value = None
     mock_add_commit.commit.return_value = None
-    mock_add_commit.query.return_value.filter.return_value.all.return_value = [
+    mock_add_commit.query.return_value.filter.return_value.filter.return_value.all.return_value = [
         Features(
             id=1,
             object_id=421,

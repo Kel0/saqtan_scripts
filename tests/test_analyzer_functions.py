@@ -77,24 +77,15 @@ def mock_session_query_all_get_crimes_count_by_cities():
     return mock_session_query_all_get_crimes_count_by_cities
 
 
-@pytest.fixture
-def mock_analyzer_functions_pandas(mocker, helpers):
-    mock_analyzer_functions_pandas = mocker.patch(
-        "saqtan_scripts.analyzer_functions.pd"
-    )
-    mock_analyzer_functions_pandas.read_sql.return_value = helpers().get_pd_features(
-        filename="tests/db/features.csv"
-    )
-    return mock_analyzer_functions_pandas
-
-
 def test_get_crime_types_count(
-    mock_analyzer_functions_pandas,
     mock_analyzer_functions_session,
     mock_session_query_all,
 ):
     data = get_crime_types_count(year=2016)
-    assert data == []
+    assert data == [
+        {"year": 2016, "crime_code": 188, "crime_desc": "Кража", "crime_count": 20},
+        {"year": 2016, "crime_code": 99, "crime_desc": "Убийство", "crime_count": 20},
+    ]
 
 
 def test_get_crimes_count(

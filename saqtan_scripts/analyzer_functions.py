@@ -2,10 +2,9 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Optional, Union
 
-import pandas as pd
 from sqlalchemy.orm import Session
 
-from .database.db import engine, session
+from .database.db import session
 from .database.models import CityCodes, CrimeCodes, Features
 
 logger = logging.getLogger(__name__)
@@ -24,25 +23,24 @@ def get_crime_types_count(year: int) -> List[Dict[str, Union[str, int]]]:
         elif len(str(crime_code.crime_code)) == 3:
             crime_code_formatted = f"{crime_code.crime_code}0"
 
-        features = pd.read_sql(
-            "SELECT * FROM features WHERE crime_code = %s AND year = %s"
-            % (crime_code_formatted, year),
-            engine,
+        features_count: int = (
+            sqlalchemy_session.query(Features)
+            .filter(Features.year == year)
+            .filter(Features.crime_code == crime_code_formatted)
+            .count()
         )
-
         crime_desc: str = crime_code.crime_desc.split("(")[0]
-        count_crimes: int = features.shape[0]
 
-        if count_crimes > 0:
+        if features_count > 0:
             logger.info(  # pragma: no cover
-                f"Count crimes: {count_crimes} | crime_code: {crime_code_formatted} | year: {year}"
+                f"Count crimes: {features_count} | crime_code: {crime_code_formatted} | year: {year}"
             )
             crimes_arr.append(
                 {
                     "year": year,
                     "crime_code": crime_code.crime_code,
                     "crime_desc": crime_desc,
-                    "crime_count": count_crimes,
+                    "crime_count": features_count,
                 }
             )
 

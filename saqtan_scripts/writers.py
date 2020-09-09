@@ -57,6 +57,7 @@ class Writer:
         features: List[Features] = (
             self.sqlalchemy_session.query(Features)
             .filter(Features.year == content["attrs"][0]["YR"])
+            .filter(Features.period == content["attrs"][0]["PERIOD"])
             .all()
         )
         key_objects: Dict[int, Dict[str, Union[str, int, float]]] = {
