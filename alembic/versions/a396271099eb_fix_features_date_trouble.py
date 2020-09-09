@@ -1,8 +1,8 @@
-"""initial push
+"""Fix features date trouble
 
-Revision ID: e19c081470ae
+Revision ID: a396271099eb
 Revises: 
-Create Date: 2020-09-05 18:25:35.151834
+Create Date: 2020-09-09 11:23:16.386982
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e19c081470ae'
+revision = 'a396271099eb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,11 +31,17 @@ def upgrade():
     sa.Column('crime_desc', sa.String(length=500), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('crimes_count',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('year', sa.Integer(), nullable=True),
+    sa.Column('crimes_count', sa.Integer(), nullable=True),
+    sa.Column('before_perc', sa.Float(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('crimes_count_periods',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('year', sa.Integer(), nullable=True),
-    sa.Column('period', sa.Integer(), nullable=True),
-    sa.Column('crimes_count', sa.Integer(), nullable=True),
+    sa.Column('json_data', sa.Text(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('count_crimes_by_cities',
@@ -48,10 +54,11 @@ def upgrade():
     )
     op.create_table('crime_counts_by_types',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('year', sa.Integer(), nullable=True),
     sa.Column('crime_code', sa.Integer(), nullable=True),
     sa.Column('crime_type', sa.String(length=255), nullable=True),
     sa.Column('crime_count', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['crime_code'], ['city_codes.city_code'], ),
+    sa.ForeignKeyConstraint(['crime_code'], ['crime_codes.crime_code'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('features',
@@ -60,12 +67,12 @@ def upgrade():
     sa.Column('year', sa.Integer(), nullable=True),
     sa.Column('period', sa.Integer(), nullable=True),
     sa.Column('crime_code', sa.String(length=10), nullable=True),
-    sa.Column('time_period', sa.Integer(), nullable=True),
+    sa.Column('time_period', sa.String(length=20), nullable=True),
     sa.Column('hard_code', sa.String(length=4), nullable=True),
     sa.Column('ud', sa.String(length=100), nullable=True),
     sa.Column('organ', sa.String(length=255), nullable=True),
-    sa.Column('dat_vozb', sa.Integer(), nullable=True),
-    sa.Column('dat_sover', sa.String(length=4), nullable=True),
+    sa.Column('dat_vozb', sa.String(length=225), nullable=True),
+    sa.Column('dat_sover', sa.String(length=225), nullable=True),
     sa.Column('stat', sa.String(length=255), nullable=True),
     sa.Column('dat_vozb_str', sa.String(length=255), nullable=True),
     sa.Column('dat_sover_str', sa.String(length=255), nullable=True),
@@ -74,7 +81,7 @@ def upgrade():
     sa.Column('city_code', sa.Integer(), nullable=True),
     sa.Column('status', sa.Integer(), nullable=True),
     sa.Column('org_code', sa.String(length=100), nullable=True),
-    sa.Column('entrydate', sa.Integer(), nullable=True),
+    sa.Column('entrydate', sa.String(length=225), nullable=True),
     sa.Column('fz1r18p5', sa.String(length=255), nullable=True),
     sa.Column('fz1r18p6', sa.String(length=255), nullable=True),
     sa.Column('transgression', sa.String(length=255), nullable=True),
@@ -100,7 +107,7 @@ def upgrade():
     op.create_index(op.f('ix_features_fz1r18p6'), 'features', ['fz1r18p6'], unique=False)
     op.create_index(op.f('ix_features_hard_code'), 'features', ['hard_code'], unique=False)
     op.create_index(op.f('ix_features_id'), 'features', ['id'], unique=False)
-    op.create_index(op.f('ix_features_object_id'), 'features', ['object_id'], unique=False)
+    op.create_index(op.f('ix_features_object_id'), 'features', ['object_id'], unique=True)
     op.create_index(op.f('ix_features_org_code'), 'features', ['org_code'], unique=False)
     op.create_index(op.f('ix_features_organ'), 'features', ['organ'], unique=False)
     op.create_index(op.f('ix_features_organ_en'), 'features', ['organ_en'], unique=False)
@@ -154,6 +161,7 @@ def downgrade():
     op.drop_table('crime_counts_by_types')
     op.drop_table('count_crimes_by_cities')
     op.drop_table('crimes_count_periods')
+    op.drop_table('crimes_count')
     op.drop_table('crime_codes')
     op.drop_table('city_codes')
     # ### end Alembic commands ###
