@@ -3,4 +3,4 @@ Backend scripts of open source project "Saqtan" \
 [Go to site](http://star.tmweb.ru/statistics)
 
 
-CHANGE TEST
+CHANGE fwfwfwq2
